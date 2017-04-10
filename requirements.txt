@@ -1,0 +1,3 @@
+itchat
+arrow
+pyodbc

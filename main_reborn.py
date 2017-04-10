@@ -10,7 +10,13 @@ wc_single_line_max = 50  # 微信半角字符单行最大长度
 sep = f'{"-"*wc_single_line_max}\n'
 single_day = timedelta(1)
 # ----------SETTING------------
-conn = pyodbc.connect(r'DRIVER={SQL Server};SERVER=10.150.192.10;DATABASE=jcx;UID=sa;PWD=Yaclic1234')
+odbc = 'SQL Server'
+server = 'server_host or ip'
+database = 'database'
+uid = 'username'
+pwd = 'password'
+
+conn = pyodbc.connect(f'DRIVER={odbc};SERVER={server};DATABASE={database};UID={uid};PWD={pwd}')
 cursor = conn.cursor()
 
 
