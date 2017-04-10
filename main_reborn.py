@@ -10,11 +10,12 @@ wc_single_line_max = 50  # 微信半角字符单行最大长度
 sep = f'{"-"*wc_single_line_max}\n'
 single_day = timedelta(1)
 # ----------SETTING------------
-odbc = 'SQL Server'
-server = 'server_host or ip'
-database = 'database'
-uid = 'username'
-pwd = 'password'
+odbc = '{SQL Server}'  # 连接字符串，一般不建议修改
+# 请勿删除两头{}符号
+server = '{server_host or ip}'
+database = '{database}'
+uid = '{username}'
+pwd = '{password}'
 
 conn = pyodbc.connect(f'DRIVER={odbc};SERVER={server};DATABASE={database};UID={uid};PWD={pwd}')
 cursor = conn.cursor()
@@ -223,7 +224,7 @@ def message_repaly(msg):
         rows = cursor.fetchall()
         return f'[全市机构排名 - 总计]\n{Arrow.now().format("YYYY-MM-DD")}\n{sep}{"#":4}{"机构":10}{"完成":4}{"目标":6}保费\n{sep}' + \
                '\n'.join([
-                             f'{pm:<{5-len(str(pm))}}{group_id:{14-len(group_id)*3}}{row[4]:>{8-len(str(row[4]))}}{row[5]:>{10-len(str(row[5]))}}{row[3]:>{14-len(str(row[3]))}}'
+                             f'{pm:<{5-len(str(pm))}}{group_name:{14-len(group_name)*3}}{prem:>{8-len(str(prem))}}{finished:>{10-len(str(finished))}}{target:>{14-len(str(target))}}'
                              for (pm, group_id, group_name, prem, finished, target) in rows])
 
     # 机关排名
@@ -238,8 +239,8 @@ def message_repaly(msg):
         rows = cursor.fetchall()
         return f'[市公司机关排名 - 总计]\n{Arrow.now().format("YYYY-MM-DD")}\n{sep}{"#":4}{"单位":10}{"完成":4}{"目标":6}保费\n{sep}' + \
                '\n'.join([
-                             f'{row[0]:<{5-len(str(row[0]))}}{row[1]:{16-len(row[1])*3}}{row[2]:>{6-len(str(row[2]))}}{row[3]:>{8-len(str(row[3]))}}{row[4]:>{14-len(str(row[4]))}}'
-                             for row in rows])
+                             f'{pm:<{5-len(str(rpm))}}{branch_name:{16-len(branch_name)*3}}{finished:>{6-len(str(finished))}}{target:>{8-len(str(target))}}{prem:>{14-len(str(prem))}}'
+                             for (pm, branch_name, finished, target, prem) in rows])
 
     # 竞技之王
     if u'竞技之王' == msg['Text']:
@@ -253,8 +254,8 @@ def message_repaly(msg):
         rows = cursor.fetchall()
         return f'[全市个人销售前8 - 总计]\n{Arrow.now().format("YYYY-MM-DD")}\n{sep}{"姓名":10}{"单位":10}{"完成":4}保费\n{sep}' + \
                '\n'.join([
-                             f'{row[0]:<{16-len(row[0])*3}}{row[1]:{20-len(row[1])*3}}{row[2]:<{8-len(str(row[2]))}}{row[3]:>{8-len(str(row[3]))}}'
-                             for row in rows])
+                             f'{staff_name:<{16-len(staff_name)*3}}{branch_name:{20-len(branch_name)*3}}{finished:<{8-len(str(finished))}}{prem:>{8-len(str(prem))}}'
+                             for (staff_name, branch_name, finished, prem) in rows])
 
     # 公司 日期
     day_comp = '公司\s*(\d{4}\-*\d{2}-*\d{2})$'
